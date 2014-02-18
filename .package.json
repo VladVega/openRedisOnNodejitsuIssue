@@ -1,0 +1,1 @@
+{"dependencies":{"redis":"0.9.x"},"version":"0.2.0-83","engines":{"node":"0.10.x"},"name":"zooplr-redis-test","scripts":{"start":"node redisTest.js"},"subdomain":"zoopredistest"}
