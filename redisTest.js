@@ -2,9 +2,9 @@ var Redis= require('redis');
 var Config = {};
 
 Config.redis= redis= {
-    host: 'node-aaaaa.openredis.com',
-    port: 11855,
-    pw: 'rs1f7NK6p4Nf8zhJSa2oRkGnZ22ZZzieHwIRLJgUt11tyBMFhhq2kGXTOLDp8xtQ'
+    host: 'proxy4.openredis.com',
+    port: 13932,
+    pw: 'f0094bb4467705d32607cc4ac19c727b6f1c2a1458291b8833b61e58e27c3447'
 };
 
 process.on('uncaughtException', function(err) {
