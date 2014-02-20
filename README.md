@@ -1,5 +1,10 @@
+What is this? A way to reproduce the ETIMEDOUT error when running a nodeJS app on nodejitsu and using openredis with node-redis. This happens when you need a long lasting redis client (pubsub for instance).
+
+
 To reproduce error:
-1. Make sure your open redis instance is set to 3600 timeout.
+
+1. Make sure your openredis instance is set to 3600 timeout.
+
 2. Run this app in your nodejitsu account with a different name/subdomain
 
 Every hour you will see this error
@@ -7,7 +12,9 @@ Every hour you will see this error
 
 
 My fix:
+
 1. Set your openredis timeout value to 1800
+
 2. Ping the db with the client every 20min.
 
 ```
