@@ -1,24 +1,28 @@
-var Redis= require('redis');
-var Config = {};
+var Redis= require('redis');//node-redis
 
-Config.redis= {
-    host: 'host',
-    port: 13932,
-    pw: 'pw'
+var Config = {
+    redis:{
+        host: 'yourHost',
+        port: 13932,
+        pw: 'yourPW',
+        timeoutVal: 1800 //the value you set one the openredis instance
+    }
 };
 
 process.on('uncaughtException', function(err) {
     console.log('uncaught:',err)
 });
-console.log('App starting');
+
+console.log('App starting, I set my openredis timeout to ' + Config.redis.timeoutVal + ' seconds.' );
 
 var client= Redis.createClient(Config.redis.port, Config.redis.host);
 //Redis.debug_mode = true;
 client.auth(Config.redis.pw, function(err){
     if(err){
-        console.log('pub auth err:', err);
+        return console.log('pub auth err:', err);
     }
     console.log('publisher created');
+
     client.on('error', function(err){
         console.log('Publisher err:',err);
     });
@@ -36,10 +40,9 @@ client.auth(Config.redis.pw, function(err){
 require('http').createServer(function(req, res) {
     res.end('ok');
 }).listen( process.env.PORT || 5001, function(err){
-        if(err){
-
-            console.log(err);
-        }
-        console.log('created server:'+ (process.env.PORT || 5001));
-    });
+    if(err){
+        console.log(err);
+    }
+    console.log('created server:'+ (process.env.PORT || 5001));
+});
 
