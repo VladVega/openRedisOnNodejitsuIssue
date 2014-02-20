@@ -1,24 +1,23 @@
-Repro code for using openredis on nodejitsu
+To reproduce error:
+1. Make sure your open redis instance is set to 3600 timeout.
+2. Run this app in your nodejitsu account with a different name/subdomain
 
-Every hour you will see
+Every hour you will see this error
 ```[02/18 13:04:00 PST][out] Publisher err: [Error: Redis connection to node-aaaaa.openredis.com:11855 failed - read ETIMEDOUT]```
-printed out in the logs.
 
-Steps to see the error:
-Publish this app with different name and subdomain on nodejitsu. Then check back in one 1 hour or 2 and you will see:
+
+My fix:
+1. Set your openredis timeout value to 1800
+2. Ping the db with the client every 20min.
 
 ```
-[02/18 12:28:17 PST][out] publishtestdone
-[02/18 12:28:17 PST][out] publisher created
-[02/18 12:28:17 PST][out] created server:5001
-[02/18 12:58:17 PST][out] publishtestdone
-[02/18 13:04:00 PST][out] Publisher err: [Error: Redis connection to node-aaaaa.openredis.com:11855 failed - read ETIMEDOUT]
-[02/18 13:28:17 PST][out] publishtestdone
-[02/18 13:58:17 PST][out] publishtestdone
-[02/18 14:04:00 PST][out] Publisher err: [Error: Redis connection to node-aaaaa.openredis.com:11855 failed - read ETIMEDOUT]
-[02/18 14:28:17 PST][out] publishtestdone
-[02/18 14:58:17 PST][out] publishtestdone
-[02/18 15:04:00 PST][out] Publisher err: [Error: Redis connection to node-aaaaa.openredis.com:11855 failed - read ETIMEDOUT]
-[02/18 15:28:17 PST][out] publishtestdone
-
+var Config = {
+    redis:{
+        host: 'yourHost',
+        port: 13932,
+        pw: 'yourPW',
+        timeoutVal: 1800, //the value you set one the openredis instance : seconds
+        pinger_frequency: 20 //minutes
+    }
+};
 ```
