@@ -5,7 +5,8 @@ var Config = {
         host: 'yourHost',
         port: 13932,
         pw: 'yourPW',
-        timeoutVal: 1800 //the value you set one the openredis instance
+        timeoutVal: 3600, //the value you set one the openredis instance : seconds
+        pinger_frequency: 30 //minutes
     }
 };
 
@@ -13,7 +14,8 @@ process.on('uncaughtException', function(err) {
     console.log('uncaught:',err)
 });
 
-console.log('App starting, I set my openredis timeout to ' + Config.redis.timeoutVal + ' seconds.' );
+console.log('App starting, I set my openredis timeout to ' + (Config.redis.timeoutVal * 1000) +
+    ' minutes. Pinger frequency: ' + Config.redis.pinger_frequency + ' minutes.' );
 
 var client= Redis.createClient(Config.redis.port, Config.redis.host);
 //Redis.debug_mode = true;
@@ -32,7 +34,7 @@ client.auth(Config.redis.pw, function(err){
         console.log('publishtestdone')
     };
 
-    setInterval(testPublish, 20*60*1000);
+    setInterval(testPublish, Config.redis.pinger_frequency*60*1000);
     testPublish();
 });
 
